@@ -1,0 +1,4 @@
+nasm -g -f elf32 fisier.asm
+gcc -g -m32 fisier.o -o exec
+
+objdump -M intel -d fisierObiect.o
