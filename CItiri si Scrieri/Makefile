@@ -1,5 +1,5 @@
 CFLAGS=-m32
-AFLAGS=-f elf
+AFLAGS=-f elf -g
 
 build:	exec
 
