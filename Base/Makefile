@@ -3,7 +3,7 @@ AFLAGS=-f elf
 
 build:	exec
 
-exec:	file.o macro.o utils.o
+exec:	file.o includes/macro.o includes/utils.o
 	gcc $^ -o $@ $(CFLAGS)
 
 file.o:file.asm
