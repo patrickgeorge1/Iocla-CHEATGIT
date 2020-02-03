@@ -2,14 +2,17 @@
 
 section .data
 
+section .bss
 
 section .text
+
 global CMAIN
 CMAIN:
     mov ebp, esp
 
-    mov eax, 4
-    PRINT_UDEC 4, eax
-    NEWLINE
+    ; code in main
 
     ret
+
+
+; functions
