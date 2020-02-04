@@ -85,5 +85,28 @@ citire:
 	NEWLINE
 	PRINT_CHAR [esp+2]
 
+
 	leave
 	ret
+
+
+
+citire_direct_pe_stiva:
+	enter 0, 0
+
+	    sub esp, 4
+
+        push esp
+        push uint_format
+        call scanf
+        add esp, 8
+
+        push dword[esp]
+        push uint_format_newline
+        call printf
+        add esp, 8
+
+        add esp, 4
+
+    leave
+    ret

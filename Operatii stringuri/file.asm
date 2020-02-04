@@ -154,15 +154,45 @@ move_a_to_final:
 		PRINT_UDEC 4, eax
 
     pop edi
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+find_substring:
+	enter 0, 0
+
+    mov al, 0  ; \0
+    lea edi, [source_text]
+    cld
     
-
-
-
-
-
-
-
-
-
-	leave
-	ret
+    repne scasb
+    
+    sub edi, source_text + 1
+    sub edi, [substr_length]
+    mov [source_length], edi
+   
+    xor eax, eax
+    
+	find_pattern:
+	    cmp eax, [source_length]
+	    jg return
+	    
+	    mov ecx, [substr_length]
+	    lea esi, [source_text + eax]
+	    lea edi, [substring]
+	    
+	    repe cmpsb
+	    jne no_match
+	    
+	    PRINT_STRING print_format
+	    PRINT_UDEC 4, eax
+	    NEWLINE
+    
+	no_match:
+	    inc eax    
+	    jmp find_pattern
+        
+return:
+    leave
+    ret
