@@ -3,7 +3,7 @@
 
 section .data
 	dword_array dd 10, 20, 30, 40, 50, 60, 70, 80, 90, 100
-	sign_array dd -1, 2, 3, 4, 5, 6, 1, 6, 2, -3
+	sign_array dd -1, 2, 3, 4, 5, 6, 1, 6, 1, -3
 
 section .bss
 
@@ -16,6 +16,7 @@ CMAIN:
     call add_elements
     call add_square
     call count_sign
+    call check_even
 
     ret
 
@@ -67,7 +68,6 @@ add_square:
 count_sign:
 	enter 0, 0
 
-		xor eax, eax  
 		xor ebx, ebx  ; positive
 		xor edx, edx  ; negative
 
@@ -98,3 +98,31 @@ count_sign:
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+check_even:
+	enter 0, 0
+
+	xor edx, edx ; pare 
+
+	mov ecx, ARRAY_SIZE
+	check_div:
+		xor ebx, ebx 
+		mov eax, dword [sign_array + 4 * (ecx - 1)]
+		mov ebx, 1
+		test eax, ebx
+		jz dont_inc
+			inc edx
+		dont_inc:
+		loop check_div
+
+
+	PRINT_STRING "Pare - "
+	PRINT_UDEC 4, edx
+	PRINT_STRING "  si Impare - "
+	mov ebx, ARRAY_SIZE
+	sub ebx, edx
+	PRINT_UDEC 4, ebx
+	NEWLINE
+
+	leave
+	ret
