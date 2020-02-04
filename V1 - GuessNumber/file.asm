@@ -62,29 +62,38 @@ main:
     call printf
     add esp, 8
 
-    ; Comment this out when doing TODO b. Uncomment it when doing TODO c and d.
     ;jmp make_call
     
-    ; TODO b: Read numbers from keyboard in an infinite loop.
+
+                                    ;input_number:
+                                    ;    sub esp, 4
+
+                                    ;    push esp
+                                    ;    push uint_format
+                                    ;    call scanf
+                                    ;    add esp, 8
+
+                                    ;    push dword[esp]
+                                    ;    push uint_format_newline
+                                    ;    call printf
+                                    ;    add esp, 8
+
+                                    ;    add esp, 4
+
+                                    ;jmp input_number
+
 
     input_number:
-        sub esp, 4
-
-        push esp
-        push uint_format
-        call scanf
-        add esp, 8
-
-        push dword[esp]
-        push uint_format_newline
-        call printf
-        add esp, 8
-
-        add esp, 4
+        call read_cmp
+        cmp eax, 1
+        je stop_bucla
 
     jmp input_number
 
-
+    stop_bucla:
+        
+    leave
+    ret
 
 make_call:
     
@@ -96,6 +105,7 @@ make_call:
     xor eax, eax
     leave
     ret
+
 
 read_cmp:
     enter 0, 0
@@ -111,10 +121,36 @@ read_cmp:
 
         mov eax, [user_input]
         cmp eax, [num]
-        
+        je return_true
+        cmp eax, [num]
+        jl return_smaller
+        cmp eax, [num]
+        jg return_greater
+
+ 
+    leave
+    ret
+
+return_true: 
+        mov eax, 1
+        leave
+        ret
+
+return_smaller:
+    push is_smaller_string
+    call printf
+    add esp, 4
+
+    mov eax, 0
+    leave
+    ret
 
 
-stop_bun:
-    mov eax, 1
+return_greater:
+    push is_larger_string
+    call printf
+    add esp, 4
+
+    mov eax, 0
     leave
     ret
