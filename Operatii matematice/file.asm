@@ -23,6 +23,7 @@ global CMAIN
 CMAIN:
     mov ebp, esp
 
+
     ; BYTE x BYTE
     mov al, byte [num1]
     mov bl, byte [num2]
