@@ -31,6 +31,7 @@ CMAIN:
 		    add esp, 8
     pop eax
 
+    push 100
     push string
     push 0
     call find        ; what, where, set ecx intern
@@ -43,8 +44,11 @@ CMAIN:
     call occurances
     add esp, 12
 
-
-    ;call move_a_to_final
+    push DWORD[size]
+    push move_string
+    push DWORD[a_mic]
+    call move_a_to_final
+    add esp, 12
 
     leave
     ret
@@ -70,19 +74,20 @@ memset:
 
 find:
 	enter 0, 0
-	mov ecx, 100    ; ca daca nu se opreste repne 
 
 	mov al, byte[ebp + 8]  ;mov al, 0  ; \0
 	mov edi, [ebp + 12]    ;lea edi, [string]
+	mov ecx, [ebp + 16]
 
     cld
     repne scasb
     dec edi
-    sub edi, string
+    sub edi, [ebp+12]
     mov [length], edi
-	    PRINT_UDEC 4, [length]
-	    NEWLINE
+	    ;PRINT_UDEC 4, [length]
+	    ;NEWLINE
 
+	mov eax, [length]
 	leave
 	ret
 
@@ -110,6 +115,8 @@ occurances:
 	stop_occurances:
 		PRINT_UDEC 4, [res]
 		NEWLINE
+
+	mov eax, [res]
 	leave
 	ret
 
@@ -119,35 +126,42 @@ occurances:
 move_a_to_final:
 	enter 0, 0
 
-	xor eax, eax
+	xor ebx, ebx
 	xor edx, edx
-	mov ebx, [size]
-	inc ebx
-	mov ecx, [size]
+	xor eax, eax
 
-	mov al, [a_mic]
-    lea edi, [move_string]
-    cld
-    repne scasb
-    dec edi
-    sub edi, move_string  ; stau pe caracterul gasit
-    dec ebx  	    	  ; aleg unde sa -l transfer
-    dec ecx			 	  ; sa nu ajunga pana la final
-
-    push ecx
-    push eax
-	    mov cl, [move_string + ebx]
-	    mov al, [edi]
-	    mov [move_string + ebx], al
-	    mov [edi], cl
-	pop eax
-	pop ecx
+	mov ebx, [ebp + 8]
+	mov edi, [ebp +12]
+	mov ecx, [ebp + 16]
 
 
 
-    mov [length], edi
-	    PRINT_UDEC 4, [length]
-	    NEWLINE
+		
+
+	push edi
+		push ecx
+			add edi, eax
+		push edi
+		push ebx
+		call find
+		pop ebx
+		pop edi
+		pop ecx
+
+		NEWLINE
+		PRINT_CHAR [edi + 1]
+		PRINT_STRING " "
+		PRINT_UDEC 4, eax
+
+    pop edi
+    
+
+
+
+
+
+
+
 
 
 	leave
