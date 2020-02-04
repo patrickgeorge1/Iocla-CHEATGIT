@@ -196,3 +196,27 @@ find_substring:
 return:
     leave
     ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+convert_string_to_int:
+	enter 0, 0
+
+	mov ebx, [ebp + 8]
+	xor eax, eax
+
+	convert_char:
+		xor edx, edx
+		mov dl, [ebx]
+		sub dl, '0'
+
+		mov ecx, 10
+		mul ecx
+		add eax, edx
+		inc ecx
+		cmp ecx, 10  ; LENGHT
+		jne convert_char
+
+	leave
+	ret

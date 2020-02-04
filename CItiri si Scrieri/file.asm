@@ -110,3 +110,26 @@ citire_direct_pe_stiva:
 
     leave
     ret
+
+
+citire_stiva_fgets:
+    enter 0, 0
+
+        sub esp, 4
+
+        mov ebx, esp
+        push dword[stdin]
+        push 10
+        push ebx
+        call fgets
+        add esp, 12
+
+        push ebx
+        push string_format
+        call printf
+        add esp, 8
+
+        add esp, 4
+
+    leave
+    ret
