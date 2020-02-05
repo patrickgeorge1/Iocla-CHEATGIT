@@ -6,10 +6,12 @@ extern scanf
 section .data
 	n1    dq    1.1
     n2    dq    4.6
-vector    dq    1.1, 2.2, 3.3, 4.1
+vector    dq    1.1, 2.2, 3.3, 4.2
+len		  dd    4
 format    db     "%f", 10, 0
 formatInt db     "%d", 10, 0
 res		  dd    0
+max   	  dq    -1000000.0
 
 section .bss
 
@@ -26,7 +28,8 @@ CMAIN:
     ;call sinX_mPI
     ;call suma_vecor
     ;call fractionr_float
-
+    ;call avg_vecor
+    call max_vector
     ret
 
 
@@ -146,6 +149,59 @@ fractionr_float:
 	push format
 	call printf
 	add esp, 12
+
+	leave
+	ret
+
+
+avg_vecor:
+	enter 0, 0
+
+	xor ecx, ecx
+	fldz
+
+	add_eleM:
+		fadd QWORD[vector + ecx * 8]
+		inc ecx
+		cmp ecx, 5
+		jl add_eleM
+
+	fidiv DWORD[len]
+
+	sub esp, 8
+	fstp QWORD[esp]
+	push format
+	call printf
+	add esp, 12
+
+	leave
+	ret
+
+
+max_vector:
+	enter 0, 0
+
+	xor ecx, ecx
+	comp_Elem:
+		fld QWORD[vector + ecx * 8]
+		fld QWORD[max]
+		fcomip
+		ja not_update_max
+		fst QWORD[max]
+		not_update_max:
+		fstp QWORD[res]
+
+		inc ecx
+		cmp ecx, 5
+		jl comp_Elem
+
+		fld QWORD[max]
+		sub esp, 8
+		fstp QWORD[esp]
+		push format
+		call printf
+		add esp, 12
+
 
 	leave
 	ret
