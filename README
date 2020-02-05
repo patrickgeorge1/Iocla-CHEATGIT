@@ -2,7 +2,8 @@ nasm -g -f elf32 fisier.asm
 gcc -m32 fisier.o -o exec
 
 objdump -M intel -d fisierObiect.o
-
+python -c 'print("HAi la mare")'
+popcnt	unde_afiseaza, unde_verifica 
 
 
 
