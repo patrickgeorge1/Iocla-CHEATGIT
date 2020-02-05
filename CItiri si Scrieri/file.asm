@@ -13,6 +13,7 @@ section .bss
     arr times 100 resd 1
     n resb 4
     string times 200 resb 1
+    radu  resb 1000
 
 
 section .text
@@ -130,6 +131,24 @@ citire_stiva_fgets:
         add esp, 8
 
         add esp, 4
+
+    leave
+    ret
+
+
+citire_in_memorie:
+    enter 0, 0
+
+    push dword[stdin]
+    push 18
+    push radu
+    call fgets
+    add esp, 12
+    
+    push radu
+    push format_str
+    call printf
+    add esp, 8
 
     leave
     ret
